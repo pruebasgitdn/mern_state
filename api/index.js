@@ -1,5 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
+// userRouter as router porque se exporto default y le cambiamos el nombre de importacion
+import userRouter from "./routes/user.routes.js";
 // Dotenv Carga las variables de entorno del archivo .env
 import dotenv from "dotenv";
 
@@ -19,3 +21,9 @@ const app = express();
 app.listen(3000, () => {
   console.log("Servidor escuchando en puerto 3000");
 });
+
+// API userRoutes
+/*
+En esta ruta va a ejectuar el sgte archivo
+*/
+app.use("/api/user", userRouter);
