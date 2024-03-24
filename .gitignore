@@ -1,2 +1,4 @@
 #No subir(ignorar) estas carpetas:
 node_modules
+claves
+.env
