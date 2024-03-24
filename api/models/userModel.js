@@ -25,6 +25,8 @@ const userSchema = new mongoose.Schema(
 );
 /*
  mongoose.model() del módulo mongoose se utiliza para crear una colección de una base de datos
+
+ tabla User
 */
 const User = mongoose.model("User", userSchema);
 export default User;
