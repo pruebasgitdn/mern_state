@@ -1,7 +1,10 @@
 import User from "../models/userModel.js";
 import bcryptjs from "bcryptjs";
 
-export const signup = async (req, res) => {
+/*
+next del middleaware
+*/
+export const signup = async (req, res, next) => {
   const { username, email, password } = req.body;
 
   //Encriptar contra, y 10 numero de vueltas de ronda
@@ -12,6 +15,6 @@ export const signup = async (req, res) => {
     await newUser.save();
     res.json("Usuario creado con exito!");
   } catch (error) {
-    res.status(500).json(error.message);
+    next(error);
   }
 };

@@ -33,3 +33,23 @@ En esta ruta va a ejectuar el sgte archivo
 app.use("/api/user", userRouter);
 
 app.use("/api/auth", authRouter);
+
+// MIDDLEWARES
+/*
+ err => errores del input
+ req => request
+ res => response
+ next => pasar al sigte middleware
+*/
+app.use((err, req, res, next) => {
+  /*
+  statuscode = err.statusCode(codigo esttatus), si no lo tiene poner 500
+  */
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(statusCode).json({
+    success: false,
+    statusCode,
+    message,
+  });
+});
