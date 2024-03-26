@@ -45,7 +45,6 @@ export const singin = async (req, res, next) => {
     payload: carga de datos json
     secret key = llave que solo el servidor conoce
 
-
     sign(payload,secret key)
     */
 

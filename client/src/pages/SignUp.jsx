@@ -79,7 +79,7 @@ export const SignUp = () => {
           disabled={loading}
           className=" uppercase p-3 bg-blue-900 text-white rounded-lg hover:opacity-90 disabled:opacity-30"
         >
-          {loading ? "Cargando" : "Ingresar"}
+          {loading ? "Cargando" : "Registrarse"}
         </button>
       </form>
       <div className="flex justify-between">
