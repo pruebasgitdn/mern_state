@@ -5,12 +5,14 @@ Un slice es una porción específica del estado de la aplicación que incluye su
 
 import { createSlice } from "@reduxjs/toolkit";
 
+// Creando el  estado inicial del slice
 const initialState = {
   currentUser: null,
   error: null,
   loading: false,
 };
 
+// Creando el slice
 const userSlice = createSlice({
   // Un nombre, utilizado en los tipos de acción
   // El estado inicial para el reductor

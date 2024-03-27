@@ -2,8 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App.jsx";
 import "./index.css";
-import { store } from "./redux/store.js";
+import { store, persistor } from "./redux/store.js";
 import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 /*
   El componente <Provider> pone el almacén Redux a disposición de cualquier componente anidado que necesite acceder al almacén Redux.
@@ -12,6 +13,11 @@ import { Provider } from "react-redux";
 */
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <App />
+    {/* 
+       PersistGate. Esto retrasa la renderización de la interfaz de usuario de la aplicación hasta que el estado persistente se haya recuperado y guardado en redux.
+    */}
+    <PersistGate loading={null} persistor={persistor}>
+      <App />
+    </PersistGate>
   </Provider>
 );
