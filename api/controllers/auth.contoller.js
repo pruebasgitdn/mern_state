@@ -65,3 +65,48 @@ export const singin = async (req, res, next) => {
     next(error);
   }
 };
+
+export const google = async (req, res, next) => {
+  try {
+    //Va  a buscar user en En modelo user en el campo email, con el email que mandamos el el body de la ventana pop up
+    const user = await User.findOne({ email: req.body.email });
+
+    // Si el usuario existe
+    if (user) {
+      // Guardamos el token q va a ser igual al id del user
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+      const { password: pass, ...rest } = user._doc;
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(res);
+    } else {
+      // Si el usuario no existe generamos la contraseña nueva, el user y foto por defect
+
+      const generatedPassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const hashedPassord = bcryptjs.hashSync(generatedPassword, 10);
+      const newUser = new User({
+        // Creamos un usuario lo seperamos unimos minuscula y añadimos numeros random pa hacer unico
+        username:
+          req.body.name.split(" ").join("").toLowerCase() +
+          Math.random().toString(36).slice(-4),
+        email: req.body.email,
+        password: hashedPassord,
+        avatar: req.body.photo,
+      });
+      await newUser.save();
+      const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+
+      const { password: pass, ...rest } = newUser._doc; //Devolvemos todo menos la contraseña
+
+      // Mandos el token y la respuesta sin la contraseña
+      res
+        .cookie("access_token", token, { httpOnly: true })
+        .status(200)
+        .json(rest);
+    }
+  } catch (error) {}
+};

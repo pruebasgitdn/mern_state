@@ -8,6 +8,7 @@ import {
   signInFailure,
   signInSuccess,
 } from "../redux/User/userSlice.js";
+import { OAuth } from "../components/OAuth.jsx";
 
 export const SignIn = () => {
   const [formData, setFormData] = useState({});
@@ -82,8 +83,9 @@ export const SignIn = () => {
         >
           {loading ? "Cargando" : "Ingresar"}
         </button>
+        <OAuth />
       </form>
-      <div className="flex justify-between">
+      <div className="flex justify-between my-3">
         <p>No tienes una cuenta?</p>
         <Link to={"/signup"}>
           <span className="mr-3 ">Registrarse</span>

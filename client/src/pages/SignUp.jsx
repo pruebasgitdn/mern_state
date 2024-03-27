@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { OAuth } from "../components/OAuth";
 
 export const SignUp = () => {
   const [formData, setFormData] = useState({});
@@ -81,8 +82,9 @@ export const SignUp = () => {
         >
           {loading ? "Cargando" : "Registrarse"}
         </button>
+        <OAuth />
       </form>
-      <div className="flex justify-between">
+      <div className="flex justify-between my-3">
         <p>Ya tienes una cuenta?</p>
         <Link to={"/signin"}>
           <span className="mr-3 ">Ingresar</span>
