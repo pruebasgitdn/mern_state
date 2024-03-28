@@ -1,7 +1,10 @@
 import { FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export const Header = () => {
+  // Extramos la propiedad currentuser del objeto state del user slice del reductor
+  const { currentUser } = useSelector((state) => state.user);
   return (
     <header className="bg-green-400	">
       <div className="flex justify-between items-center mx-auto p-3 max-w-6xl">
@@ -35,10 +38,19 @@ export const Header = () => {
             </li>
           </Link>
 
-          <Link to="/signin">
-            <li className="hidden sm:inline text-slate-700 hover:text-slate-500">
-              Ingresar
-            </li>
+          <Link to="/profile">
+            {/* Si el currentuser existe */}
+            {currentUser ? (
+              <img
+                className="rounded-full h-8 w-8 object-cover"
+                src={currentUser.avatar}
+                alt="perfilfoto"
+              ></img>
+            ) : (
+              <li className="hidden sm:inline text-slate-700 hover:text-slate-500">
+                Ingresar
+              </li>
+            )}
           </Link>
         </ul>
       </div>

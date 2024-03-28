@@ -25,6 +25,7 @@ export const OAuth = () => {
         autenticacion
         ) = acceder con ventana emergente
       */
+
       const result = await signInWithPopup(auth, provider);
 
       // Hacemos la peticion

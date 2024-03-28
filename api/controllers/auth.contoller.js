@@ -75,11 +75,12 @@ export const google = async (req, res, next) => {
     if (user) {
       // Guardamos el token q va a ser igual al id del user
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
       const { password: pass, ...rest } = user._doc;
       res
         .cookie("access_token", token, { httpOnly: true })
         .status(200)
-        .json(res);
+        .json(rest);
     } else {
       // Si el usuario no existe generamos la contraseña nueva, el user y foto por defect
 
@@ -108,5 +109,7 @@ export const google = async (req, res, next) => {
         .status(200)
         .json(rest);
     }
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 };
