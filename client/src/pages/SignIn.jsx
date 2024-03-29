@@ -18,6 +18,7 @@ export const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleChange = (e) => {
+    // Cuando detecte un cambio setea el form data copiando lo anterior y agregando por cada id de donde se identifique pone el valor
     setFormData({
       ...formData,
       [e.target.id]: e.target.value,
