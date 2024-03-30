@@ -7,15 +7,24 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { app } from "../firebase.js";
+// Importamos los reducers
+import {
+  updateUserStart,
+  updateUserFailure,
+  updateUserSuccess,
+} from "../redux/User/userSlice.js";
+import { useDispatch } from "react-redux";
 export const Profile = () => {
   /*
   Traemos el current user que es un estado del slice user que guarda al usuario que se le manda al formulario de ingreso en el reductor signinsucces .. y proviene del user slice 
   */
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, loading, error } = useSelector((state) => state.user);
   const [file, setFile] = useState(undefined);
   const [filePerc, setFilePerc] = useState(0);
   const [UploadError, setUploadError] = useState(false);
   const [formData, setFormData] = useState({});
+  const [updateSuccess, setUpdateSuccess] = useState(false);
+  const dispatch = useDispatch();
 
   console.log(filePerc);
   console.log(file);
@@ -75,13 +84,47 @@ export const Profile = () => {
     );
   };
 
+  const handleChange = (e) => {
+    // Este setformadata nos guarda los cambios en cada input por id y valor
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch(updateUserStart());
+      const res = await fetch(`/api/user/update/${currentUser._id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        // El cuerpo de la peticion es form data que seteamos antes en el handle change por cada input
+        body: JSON.stringify(formData),
+      });
+      // Esperamos la peticion y guardamos en data
+      const data = await res.json();
+
+      // Si la peticion es falsa
+      if (data.success == false) {
+        dispatch(updateUserFailure(data.message));
+        return;
+      }
+      // Si la peticion va bien
+      dispatch(updateUserSuccess(data));
+      setUpdateSuccess(true);
+    } catch (error) {
+      dispatch(updateUserFailure(error.message));
+      console.log(error);
+    }
+  };
+
   return (
     /*
     max-w-lg	= max-width: 32rem; (ancho maximo de 32)
     */
     <div className="max-w-xl mx-auto p-3 ">
       <h1 className="text-3xl font-semibold text-center my-7">Perfil</h1>
-      <form action="" className="flex flex-col gap-3">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3">
         {/* Escondemos el input y hacemos que se mustre con el ref y la fucion onclick de la img y que acepte solo imagenes*/}
         <input
           onChange={(e) => setFile(e.target.files[0])}
@@ -120,21 +163,29 @@ export const Profile = () => {
           className="border p-3 rounded-lg"
           placeholder="Usuario"
           id="username"
+          defaultValue={currentUser.username}
+          onChange={handleChange}
         />
         <input
           type="email"
           className="border p-3 rounded-lg"
           placeholder="Email"
           id="email"
+          defaultValue={currentUser.email}
+          onChange={handleChange}
         />
         <input
           type="password"
           className="border p-3 rounded-lg"
           placeholder="Contraseña"
           id="password"
+          onChange={handleChange}
         />
-        <button className="bg-blue-900 text-white rounded-lg uppercase p-3 hover:opacity-95 disabled:opacity-50">
-          Actualizar
+        <button
+          disabled={loading}
+          className="bg-blue-900 text-white rounded-lg uppercase p-3 hover:opacity-95 disabled:opacity-50"
+        >
+          {loading ? "Cargando" : "Actualizar"}
         </button>
       </form>
       <div className="flex justify-between mt-4">
@@ -143,6 +194,15 @@ export const Profile = () => {
         </span>
         <span className="text-red-600 cursor-pointer font-semibold">Salir</span>
       </div>
+
+      {/* Si hay un error mostrarlo, si no no mostrar nada  */}
+      <p className="text-red-700 mt-4"> {error ? error : ""}</p>
+
+      {/* Si actualizo exitosamente */}
+      <p className="text-green-700">
+        {" "}
+        {updateSuccess ? "Usuario actualizado correctamente!!" : ""}
+      </p>
     </div>
   );
 };
