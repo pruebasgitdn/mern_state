@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import cors from "cors";
+// Cookie Parser es un middleware de Node JS utilizado para obtener datos de cookies.
+import cookieParser from "cookie-parser";
 // Dotenv Carga las variables de entorno del archivo .env
 import dotenv from "dotenv";
 
@@ -21,6 +23,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
+app.use(cookieParser()); // Ahora podemos obtener informacion de las cookies
 
 app.listen(3000, () => {
   console.log("Servidor escuchando en puerto 3000");
