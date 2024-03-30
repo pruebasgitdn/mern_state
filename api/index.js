@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 // userRouter as router porque se exporto default y le cambiamos el nombre de importacion
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
+import listingRouter from "./routes/listing.routes.js";
 import cors from "cors";
 // Cookie Parser es un middleware de Node JS utilizado para obtener datos de cookies.
 import cookieParser from "cookie-parser";
@@ -35,6 +36,7 @@ En esta ruta va a ejectuar el sgte archivo
 */
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/listing", listingRouter);
 app.use(cors());
 // MIDDLEWARES
 /*
