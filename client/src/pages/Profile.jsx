@@ -15,6 +15,7 @@ import {
   deleteUserStart,
   deleteUserFailure,
   deleteUserSuccess,
+  signOutUserStart,
 } from "../redux/User/userSlice.js";
 import { useDispatch } from "react-redux";
 export const Profile = () => {
@@ -141,6 +142,23 @@ export const Profile = () => {
     }
   };
 
+  const handleLogOut = async () => {
+    try {
+      dispatch(signOutUserStart());
+      const res = await fetch("/api/auth/signout");
+      const data = res.json();
+
+      // En caso de algo andar mal
+      if (data.success == false) {
+        dispatch(deleteUserFailure(data.message));
+      }
+      // En caso de exito
+      dispatch(deleteUserSuccess(data));
+    } catch (error) {
+      dispatch(deleteUserFailure(data.message));
+    }
+  };
+
   return (
     /*
     max-w-lg	= max-width: 32rem; (ancho maximo de 32)
@@ -175,7 +193,9 @@ export const Profile = () => {
           ) : filePerc > 0 && filePerc < 100 ? (
             <span className="text-slate-700">{`Subiendo imagen, ${filePerc}% completado.`}</span>
           ) : filePerc == 100 ? (
-            <span className="text-green-700">Imagen subida con exito!!</span>
+            <span onClick={handleLogOut} className="text-green-700">
+              Imagen subida con exito!!
+            </span>
           ) : (
             ""
           )}
@@ -218,7 +238,12 @@ export const Profile = () => {
         >
           Eliminar Cuenta
         </span>
-        <span className="text-red-600 cursor-pointer font-semibold">Salir</span>
+        <span
+          onClick={handleLogOut}
+          className="text-red-600 cursor-pointer font-semibold"
+        >
+          Salir
+        </span>
       </div>
 
       {/* Si hay un error mostrarlo, si no no mostrar nada  */}

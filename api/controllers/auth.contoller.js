@@ -113,3 +113,14 @@ export const google = async (req, res, next) => {
     next(error);
   }
 };
+
+// Funcion salir
+export const signout = async (req, res, next) => {
+  try {
+    // Limpiamos la cookie del navegador
+    res.clearCookie("access_token");
+    res.status(200).json("Usuario ha salido con exito!");
+  } catch (error) {
+    next(error);
+  }
+};
