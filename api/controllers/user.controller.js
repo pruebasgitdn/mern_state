@@ -48,3 +48,17 @@ export const updateUser = async (req, res, next) => {
     next(error);
   }
 };
+
+export const deleteUser = async (req, res, next) => {
+  // Si el user req.user.id que pasamos en el verifyToken es diferente al req.params.id que pasamos por la url
+  if (req.user.id != req.params.id) {
+    return next(errorHandler(401, "Solo puedes eliminar tu propia cuenta"));
+  }
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.clearCookie("access_token");
+    res.status(200).json("Usuario ha sido eliminado con exito!");
+  } catch (error) {
+    next(error);
+  }
+};
