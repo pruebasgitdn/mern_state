@@ -18,6 +18,7 @@ import {
   signOutUserStart,
 } from "../redux/User/userSlice.js";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
 export const Profile = () => {
   /*
   Traemos el current user que es un estado del slice user que guarda al usuario que se le manda al formulario de ingreso en el reductor signinsucces .. y proviene del user slice 
@@ -230,6 +231,12 @@ export const Profile = () => {
         >
           {loading ? "Cargando" : "Actualizar"}
         </button>
+        <Link
+          className="bg-green-600 text-center text-white p-3 rounded-lg uppercase hover:opacity-90 "
+          to={"/create-listing"}
+        >
+          Crea una publicacion
+        </Link>
       </form>
       <div className="flex justify-between mt-4">
         <span
