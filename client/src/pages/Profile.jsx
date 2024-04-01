@@ -29,6 +29,8 @@ export const Profile = () => {
   const [UploadError, setUploadError] = useState(false);
   const [formData, setFormData] = useState({});
   const [updateSuccess, setUpdateSuccess] = useState(false);
+  const [showListingErrors, setShowListingErrors] = useState(false);
+  const [userListings, setUserListings] = useState([]);
   const dispatch = useDispatch();
 
   console.log(filePerc);
@@ -160,6 +162,23 @@ export const Profile = () => {
     }
   };
 
+  const handleShowListings = async () => {
+    try {
+      setShowListingErrors(false);
+      // Aca pasamos por bactick el req.params.id
+      const res = await fetch(`/api/user/listings/${currentUser._id}`);
+      const data = await res.json();
+      if (data.success == false) {
+        setShowListingErrors(true);
+        return;
+      }
+      // Si todo esta bien
+      setUserListings(data);
+    } catch (error) {
+      setShowListingErrors(true);
+    }
+  };
+
   return (
     /*
     max-w-lg	= max-width: 32rem; (ancho maximo de 32)
@@ -261,6 +280,53 @@ export const Profile = () => {
         {" "}
         {updateSuccess ? "Usuario actualizado correctamente!!" : ""}
       </p>
+      <button
+        onClick={handleShowListings}
+        className="w-full text-green-600 font-bold border-1 border p-2 rounded-lg border-green-800 hover:bg-green-800 hover:text-white mb-5"
+      >
+        Mostrar publicaciones.
+      </button>
+      <p className="text-red-600 ">
+        {showListingErrors ? "Error listando publicaciones" : ""}
+      </p>
+      {
+        // Si user listings existe y es mayor a cero nmostrarlo
+        userListings && userListings.length > 0 && (
+          <div className="flex flex-col gap-3">
+            <h1 className="text-center text-3xl font-semibold py-3">
+              Tus publicaciones.
+            </h1>
+            {userListings.map((publicacion) => (
+              <div
+                key={publicacion._id}
+                className="border border-1 p-3 border-gray-600 rounded-lg mt-3 flex justify-between hover:bg-slate-50 items-center gap-4"
+              >
+                <Link to={`/listing/${publicacion._id}`}>
+                  <img
+                    src={publicacion.imageURLs[0]}
+                    alt=""
+                    className="h-[110px] w-[110px] object-contain"
+                  />
+                </Link>
+                <Link
+                  className="text-slate-700 font-semibold hover:underline truncate flex-1"
+                  to={`/listing/${publicacion._id}`}
+                >
+                  <p>{publicacion.name}</p>
+                </Link>
+                <div className="flex gap-3">
+                  <button className="text-red-500 border-y-2   border-red-500 p-1 rounded-lg uppercase font-semibold">
+                    Eliminar
+                  </button>
+                  <button className="text-green-500 border-y-2    border-green-500 p-1 rounded-lg uppercase font-semibold">
+                    Editar
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )
+      }
     </div>
   );
 };
