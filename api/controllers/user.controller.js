@@ -1,3 +1,4 @@
+import Listing from "../models/listingModel.js";
 import User from "../models/userModel.js";
 import { errorHandler } from "../utils/error.js";
 import bcryptjs from "bcryptjs";
@@ -60,5 +61,21 @@ export const deleteUser = async (req, res, next) => {
     res.status(200).json("Usuario ha sido eliminado con exito!");
   } catch (error) {
     next(error);
+  }
+};
+
+//Funcion para obtener las publicaciones del usuario
+export const getUserListings = async (req, res, next) => {
+  // Si el req.user.id que pasamos en verify token que vecrifica el usuario (middleware) es igual al que pasamos por la ruta /listins/:id
+  if (req.user.id == req.params.id) {
+    try {
+      // BUscar en el modelo listings en la columna userref por el req.params.id que se le pasa por la ruta a la peticion /listins/:id
+      const listings = await Listing.find({ userRef: req.params.id });
+      res.status(200).json(listings);
+    } catch (error) {
+      next(error);
+    }
+  } else {
+    return next(errorHandler(401, "Solo puedes ver tus publicaciones"));
   }
 };
