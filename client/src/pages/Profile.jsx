@@ -179,6 +179,28 @@ export const Profile = () => {
     }
   };
 
+  const handleListingDelete = async (listingId) => {
+    try {
+      // Eliminar del backend
+      const res = await fetch(`/api/listing/delete/${listingId}`, {
+        method: "DELETE",
+      });
+      const data = await res.json();
+      if (data.success == false) {
+        console.log(data.message);
+        return;
+      }
+
+      // Elimar del la lista
+      // filtrar y devolver los que sean diferentes al id
+      setUserListings((previo) =>
+        previo.filter((listing) => listing._id !== listingId)
+      );
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     /*
     max-w-lg	= max-width: 32rem; (ancho maximo de 32)
@@ -315,7 +337,10 @@ export const Profile = () => {
                   <p>{publicacion.name}</p>
                 </Link>
                 <div className="flex gap-3">
-                  <button className="text-red-500 border-y-2   border-red-500 p-1 rounded-lg uppercase font-semibold">
+                  <button
+                    onClick={() => handleListingDelete(publicacion._id)}
+                    className="text-red-500 border-y-2   border-red-500 p-1 rounded-lg uppercase font-semibold"
+                  >
                     Eliminar
                   </button>
                   <button className="text-green-500 border-y-2    border-green-500 p-1 rounded-lg uppercase font-semibold">
