@@ -56,3 +56,15 @@ export const updateListing = async (req, res, next) => {
     next(error);
   }
 };
+
+// Este getlistin nos obtiene el id para mas tarde modificarlo
+
+export const getListing = async (req, res, next) => {
+  try {
+    const listing = await Listing.findById(req.params.id);
+    if (!listing) {
+      return next(errorHandler(404, "Publicacion no encontrada"));
+    }
+    res.status(200).json(listing);
+  } catch (error) {}
+};

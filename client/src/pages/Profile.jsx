@@ -343,9 +343,11 @@ export const Profile = () => {
                   >
                     Eliminar
                   </button>
-                  <button className="text-green-500 border-y-2    border-green-500 p-1 rounded-lg uppercase font-semibold">
-                    Editar
-                  </button>
+                  <Link to={`/update-listing/${publicacion._id}`}>
+                    <button className="text-green-500 border-y-2    border-green-500 p-1 rounded-lg uppercase font-semibold">
+                      Editar
+                    </button>
+                  </Link>
                 </div>
               </div>
             ))}
