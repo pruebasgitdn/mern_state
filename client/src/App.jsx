@@ -12,6 +12,7 @@ import { Header } from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
 import { CreateListing } from "./pages/CreateListing";
 import { UpdateListing } from "./pages/UpdateListing";
+import { Listing } from "./pages/Listing";
 
 export const App = () => {
   return (
@@ -23,6 +24,7 @@ export const App = () => {
         <Route path="/about" element={<About />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/listing/:listingID" element={<Listing />} />
         {/* Privatizamos la ruta perfil conteniendola con esta otra que tiene tosda la configuracion de privatizacion */}
         <Route element={<PrivateRoute />}>
           <Route path="/profile" element={<Profile />} />
