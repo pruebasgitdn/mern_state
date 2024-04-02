@@ -79,3 +79,17 @@ export const getUserListings = async (req, res, next) => {
     return next(errorHandler(401, "Solo puedes ver tus publicaciones"));
   }
 };
+
+export const getUser = async (req, res, next) => {
+  try {
+    // El usuario de la ruta lo buscamos en users por el id
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return next(errorHandler(404, "Usuario no encontrado"));
+    }
+    // Separamos la contraseña de la respuesta
+    const { password: pass, ...rest } = user._doc;
+    res.status(200).json(rest);
+  } catch (error) {}
+};

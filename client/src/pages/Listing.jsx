@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 // Importamos el modulo swiper para hacer las imagenes deslizantes
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore from "swiper";
 import { Navigation } from "swiper/modules";
 import "swiper/css/bundle";
-import { FaBath, FaMapMarkedAlt, FaBed, FaCar } from "react-icons/fa";
+import {
+  FaBath,
+  FaMapMarkedAlt,
+  FaBed,
+  FaCar,
+  FaMailBulk,
+} from "react-icons/fa";
 import { MdChair } from "react-icons/md";
+import { Contact } from "../components/Contact";
 
 export const Listing = () => {
   //Inicializamos el swiper
@@ -15,6 +23,12 @@ export const Listing = () => {
   const [listing, setListing] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
+  const [contact, setContact] = useState(false);
+
+  //   Importamos el usuario del redux
+  const { currentUser } = useSelector((state) => state.user);
+
+  console.log(currentUser._id + listing?.userRef);
 
   useEffect(() => {
     const fetchlisting = async () => {
@@ -124,6 +138,19 @@ export const Listing = () => {
                 {listing.furnished ? "Amoblado" : "No amoblado"}
               </li>
             </ul>
+
+            {/* El usuario actual compararlo con el userref del listin que es la referencia del user que creo la publicacion y si son diferentes mostrar el boton de contactar propietario porque esa persona es la que vera el boton mas no el propietario porque lo esta ofreciendo  */}
+            {currentUser && listing.userRef !== currentUser._id && !contact && (
+              <button
+                onClick={() => setContact(true)}
+                className="bg-blue-900 text-white rounded-lg uppercase font-bold hover:opacity-90 p-2 flex items-center justify-center gap-2 my-2"
+              >
+                Contactar al propietario
+                <FaMailBulk></FaMailBulk>
+              </button>
+            )}
+            {/* Si contact es true mostrar el componente contact y al componente contact le pasamos el prop listing que tendra toda la informacion de la publicion */}
+            {contact && <Contact listing={listing} />}
           </div>
         </div>
       )}
