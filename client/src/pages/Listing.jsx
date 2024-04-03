@@ -88,12 +88,12 @@ export const Listing = () => {
             <p className="text-2xl font-semibold">
               {listing.name} - ${" "}
               {listing.offer ? (
-                <span className="bg-red-700 p-1 rounded-md text-white">
-                  {listing.discountPrice.toLocaleString("es-ES")}
+                <span className="bg-orange-500 p-1 rounded-md text-white">
+                  {listing.discountPrice.toLocaleString("es-ES")} Descuento
                 </span>
               ) : (
                 <span className="bg-green-700 p-1 rounded-md text-white hover:bg-green-500">
-                  {listing.regularPrice.toLocaleString("es-ES")}
+                  {listing.regularPrice.toLocaleString("es-ES")} Precio regular
                 </span>
               )}
               {listing.type === "rent" && " / mes"}
@@ -108,7 +108,8 @@ export const Listing = () => {
               </p>
               {listing.offer && (
                 <p className="bg-green-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
-                  ${+listing.regularPrice - +listing.discountPrice} OFF
+                  {" "}
+                  Valor total: ${+listing.regularPrice - +listing.discountPrice}
                 </p>
               )}
             </div>
