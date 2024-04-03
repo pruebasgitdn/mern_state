@@ -34,7 +34,6 @@ export const Header = () => {
     }
   }, [location.search]);
 
-  console.log(searchTerm);
   return (
     <header className="bg-green-400	">
       <div className="flex justify-between items-center mx-auto p-3 max-w-6xl">
