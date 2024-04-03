@@ -1,10 +1,40 @@
 import { FaSearch } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 export const Header = () => {
   // Extramos la propiedad currentuser del objeto state del user slice del reductor
   const { currentUser } = useSelector((state) => state.user);
+  const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    /*
+    La interfaz URLSearchParams define métodos de utilidad para trabajar con la cadena de consulta
+
+    La propiedad de search de la interfaz de location es una cadena de búsqueda, también llamada cadena de consulta; es decir, una cadena que contiene un '?' seguido de los parámetros de la URL.
+
+    */
+    const urlParams = new URLSearchParams(window.location.search);
+    // Seteamos el key value que es ? /search?searchTerm="busqueda"que nos lleba a donde busquemos en el nav
+    urlParams.set("searchTerm", searchTerm);
+    const searchQuery = urlParams.toString();
+    navigate(`/search?${searchQuery}`);
+  };
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search);
+    const searchTermFromUrl = urlParams.get("searchTerm");
+
+    // Si encuentra el termino lo setea con el valor
+    if (searchTermFromUrl) {
+      setSearchTerm(searchTermFromUrl);
+    }
+  }, [location.search]);
+
+  console.log(searchTerm);
   return (
     <header className="bg-green-400	">
       <div className="flex justify-between items-center mx-auto p-3 max-w-6xl">
@@ -16,13 +46,20 @@ export const Header = () => {
           </h1>
         </Link>
 
-        <form className="bg-slate-100  rounded-lg p-2 flex items-center">
+        <form
+          onSubmit={handleSubmit}
+          className="bg-slate-100  rounded-lg p-2 flex items-center"
+        >
           <input
             type="text"
             placeholder="Buscar ..."
             className="bg-transparent focus:outline-none sm:w-60"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
-          <FaSearch className="text-slate-500" />
+          <button>
+            <FaSearch className="text-slate-500" />
+          </button>
         </form>
         {/*  */}
         <ul className="flex gap-2 mx-2 font-semibold">
