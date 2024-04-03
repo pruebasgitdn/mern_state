@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ListingItem } from "../components/ListingItem";
 
 export const Search = () => {
   const navigate = useNavigate();
@@ -72,7 +73,7 @@ export const Search = () => {
   };
 
   useEffect(() => {
-    // Obtenemos los parametros de la urñ
+    // Obtenemos los parametros de la url que añadimos antes en el handle submit
     const urlParams = new URLSearchParams(location.search);
     const searchTermFromUrl = urlParams.get("searchTerm");
     const typeFromUrl = urlParams.get("type");
@@ -92,6 +93,7 @@ export const Search = () => {
       sortFromUrl ||
       orderFromUrl
     ) {
+      // Valores iniciales
       setSidearData({
         searchTerm: searchTermFromUrl || "",
         type: typeFromUrl || "all",
@@ -226,10 +228,30 @@ export const Search = () => {
         </form>
       </div>
 
-      <div className="">
+      <div className="flex-1">
         <h1 className="font-bold text-3xl border-b border-blue-500 p-3 text-cyan-600 hover:text-cyan-400 m-3">
           Resultados:
         </h1>
+        <div className="p-5 flex flex-wrap gap-3">
+          {/* Si loading es false, cuando algo salio mao y cuando listings.lengt === 0 osea que no se encontraron publicaciones ya que en listing, con el setListing se setean las publicaciones que se coincidan con el navegador de busqueda */}
+          {!loading && listings.length == 0 && (
+            <p className="text-xl text-blue-800">
+              No se encontraron publicaciones!
+            </p>
+          )}
+          {loading && (
+            <p className="text-xl text-blue-800 text-center w-full">
+              Cargando...
+            </p>
+          )}
+          {/* Cuando se encuentran publicaiones coincidentes ya que en listing, con el setListing se setean las publicaciones que se coincidan con el navegador de busqueda*/}
+          {/* Si loading es falso y exite listing entonces y mapearlo y por cada mapeo al invocar el componente listingitem pasandole como prop cada pulblicacion(iteracion) para editarlo y mostarlo en una card mela */}
+          {!loading &&
+            listings &&
+            listings.map((listing) => (
+              <ListingItem key={listing._id} listing={listing} />
+            ))}
+        </div>
       </div>
     </div>
   );
