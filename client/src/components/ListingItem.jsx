@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export const ListingItem = ({ listing }) => {
   return (
     // Despues de medida sm: ocupara un ancho de 330px
-    <div className="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden w-full sm:w-[300px] mx-auto">
+    <div className="bg-white shadow-md hover:shadow-xl rounded-lg overflow-hidden w-full sm:w-[275px]  mx-auto">
       <Link to={`/listing/${listing._id}`}>
         <img
           src={listing.imageURLs[0]}
