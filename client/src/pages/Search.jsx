@@ -15,6 +15,7 @@ export const Search = () => {
     sort: "created_at",
     order: "desc",
   });
+  const [showMore, setShowMore] = useState(false);
 
   const handleChange = (e) => {
     // Condiciones para los inputs porque son difererentes: text, checkbox etc
@@ -108,18 +109,39 @@ export const Search = () => {
     // API Cal
     const fetchListings = async () => {
       setLoading(true);
+      setShowMore(false);
       const searchQuery = urlParams.toString();
       /*
         Esta peticion me ejecuta getlistings como recoradtorio de listing.controller
         */
       const res = await fetch(`/api/listing/get?${searchQuery}`);
       const data = await res.json();
+      if (data.length > 5) {
+        setShowMore(true);
+      } else {
+        setShowMore(false);
+      }
       setLisings(data);
       setLoading(false);
     };
 
     fetchListings();
   }, [location.search]);
+
+  // Esto me trae mas datos pero a partir del index en que haya quedado anteriormente
+  const ShowMoreClick = async () => {
+    const length = listings.length;
+    const startIndex = length;
+    const urlParams = new URLSearchParams(location.search);
+    urlParams.set("startIndex", startIndex);
+    const searchQuery = urlParams.toString();
+    const res = await fetch(`/api/listing/get?${searchQuery}`);
+    const data = await res.json();
+    if (data.length < 6) {
+      setShowMore(false);
+    }
+    setLisings([...listings, ...data]);
+  };
   return (
     <div className="flex flex-col md:flex-row">
       {/*
@@ -251,6 +273,15 @@ export const Search = () => {
             listings.map((listing) => (
               <ListingItem key={listing._id} listing={listing} />
             ))}
+
+          {showMore && (
+            <button
+              className="w-full text-center font-semibold text-cyan-700 hover:underline"
+              onClick={ShowMoreClick}
+            >
+              Mostrar más
+            </button>
+          )}
         </div>
       </div>
     </div>

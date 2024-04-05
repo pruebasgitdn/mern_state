@@ -39,7 +39,7 @@ export const Listing = () => {
 
         const data = await res.json();
 
-        if (data.sucess == false) {
+        if (data.success == false) {
           setError(true);
           setLoading(false);
           return;
@@ -70,16 +70,15 @@ export const Listing = () => {
         <div>
           {/* Swiper renderiza todos los slides */}
           <Swiper navigation>
-            {listing.imageURLs.map((url) => (
-              //Es cada una de las partes deslizantes
+            {listing.imageURLs.map((url, i) => (
+              //Es cada una de las partes deslizantes url(`${url}`)
               <SwiperSlide key={url}>
-                <div
-                  className="h-[500px]"
-                  style={{
-                    background: `url(${url}) center no-repeat`,
-                    backgroundSize: "cover",
-                  }}
-                ></div>
+                <div className="flex justify-center items-center mt-5 ">
+                  <img
+                    src={url}
+                    className="h-[550px] rounded-md  hover:shadow-xl hover:scale-105"
+                  />
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -103,7 +102,7 @@ export const Listing = () => {
               {listing.address}
             </p>
             <div className="flex gap-4">
-              <p className="bg-red-900 w-full max-w-[200px] text-white text-center p-1 rounded-md">
+              <p className="bg-orange-600 w-full max-w-[200px] text-white text-center p-1 rounded-md">
                 {listing.type === "rent" ? "Para alquiler" : "Para la venta"}
               </p>
               {listing.offer && (
