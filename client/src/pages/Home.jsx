@@ -127,7 +127,7 @@ export const Home = () => {
                 Mostrar más lugares en alquiler
               </Link>
             </div>
-            <div className="flex flex-wrap">
+            <div className="flex flex-wrap mt-4">
               {rentListings.map((listing) => (
                 <ListingItem listing={listing} key={listing._id} />
               ))}

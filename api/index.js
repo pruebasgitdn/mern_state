@@ -9,6 +9,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 // Dotenv Carga las variables de entorno del archivo .env
 import dotenv from "dotenv";
+import path from "path";
 
 // config. carga los documentos .env
 dotenv.config();
@@ -21,6 +22,9 @@ mongoose
   .catch((error) => {
     console.log(error);
   });
+
+// Directrio dinamico
+const __dirname = path.resolve();
 
 const app = express();
 app.use(express.json());
@@ -37,6 +41,13 @@ En esta ruta va a ejectuar el sgte archivo
 app.use("/api/user", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/listing", listingRouter);
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
 app.use(cors());
 // MIDDLEWARES
 /*

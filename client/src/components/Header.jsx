@@ -40,8 +40,8 @@ export const Header = () => {
         <Link to="/">
           {/* sm: despues de 680px  */}
           <h1 className="font-bold sm:text-xl flex flex-wrap">
-            <span className="text-slate-100">Bienes e </span>
-            <span className="text-slate-700">Inmuebles</span>
+            <span className="text-slate-100">Bienes E </span>
+            <span className="text-slate-700"> Inmuebles</span>
           </h1>
         </Link>
 
