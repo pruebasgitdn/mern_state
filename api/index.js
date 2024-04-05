@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import userRouter from "./routes/user.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import listingRouter from "./routes/listing.routes.js";
-import cors from "cors";
+
 // Cookie Parser es un middleware de Node JS utilizado para obtener datos de cookies.
 import cookieParser from "cookie-parser";
 // Dotenv Carga las variables de entorno del archivo .env
@@ -48,7 +48,6 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
-app.use(cors());
 // MIDDLEWARES
 /*
  err => errores del input
